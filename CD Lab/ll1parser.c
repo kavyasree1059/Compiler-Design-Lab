@@ -4,16 +4,14 @@
 
 char input[50], stack[50];
 
-// Parsing table
-// Rows: e=0, b=1, t=2, c=3, f=4
-// Columns: i=0, +=1, *=2, ( =3, )=4, $=5
+
 
 char m[5][6][5] = {
-    {"tb",  "",   "",   "tb", "",  ""},     // e
-    {"",   "+tb", "",   "",   "n", "n"},    // b
-    {"fc",  "",   "",   "fc", "",  ""},     // t
-    {"",    "n",  "*fc","",   "n", "n"},    // c
-    {"i",   "",   "",   "(e)", "",  ""}     // f
+    {"tb",  "",   "",   "tb", "",  ""},     
+    {"",   "+tb", "",   "",   "n", "n"},   
+    {"fc",  "",   "",   "fc", "",  ""},     
+    {"",    "n",  "*fc","",   "n", "n"},    
+    {"i",   "",   "",   "(e)", "",  ""}    
 };
 
 int size[5][6] = {
@@ -25,7 +23,7 @@ int size[5][6] = {
 };
 
 int main() {
-    int top = 1;  // stack top index
+    int top = 1; 
     int i = top, j = 0, k;
     int row, col;
 
@@ -42,20 +40,20 @@ int main() {
     printf("------------------------\n");
 
     while (stack[i] != '$' || input[j] != '$') {
-        // Print stack
+     
         for (k = 0; k <= i; k++) printf("%c", stack[k]);
         printf("\t\t");
-        // Print remaining input
+        
         for (k = j; k < len; k++) printf("%c", input[k]);
         printf("\n");
 
         if (stack[i] == input[j]) {
-            // Terminal match - pop and advance input
+            
             i--;
             j++;
         }
         else {
-            // Determine row from stack[i]
+          
             switch(stack[i]) {
                 case 'e': row = 0; break;
                 case 'b': row = 1; break;
@@ -67,7 +65,6 @@ int main() {
                     exit(0);
             }
 
-            // Determine column from input[j]
             switch(input[j]) {
                 case 'i': col = 0; break;
                 case '+': col = 1; break;
@@ -85,13 +82,13 @@ int main() {
                 exit(0);
             }
             else if (m[row][col][0] == 'n') {
-                // epsilon production: pop non-terminal
+               
                 i--;
             }
             else {
-                // Pop non-terminal
+              
                 i--;
-                // Push RHS of production in reverse order
+               
                 for (k = size[row][col] - 1; k >= 0; k--) {
                     stack[++i] = m[row][col][k];
                 }
